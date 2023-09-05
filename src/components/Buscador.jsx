@@ -24,7 +24,7 @@ const Buscador = ({ buscarColaborador }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mb-3">
           Buscar
         </button>
       </form>
