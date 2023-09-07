@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import Alert from "./Alert";
 
-const Formulario = ({ agregarColaborador }) => {
+const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
   const [colaborador, setColaborador] = useState({
-    nombre: '',
-    correo: '',
-    edad: '',
-    cargo: '',
-    telefono: '',
+    nombre: "",
+    correo: "",
+    edad: "",
+    cargo: "",
+    telefono: "",
   });
+
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,30 +20,32 @@ const Formulario = ({ agregarColaborador }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      colaborador.nombre &&
-      colaborador.correo &&
-      colaborador.edad &&
-      colaborador.cargo &&
-      colaborador.telefono
+      colaborador.nombre === "" ||
+      colaborador.correo === "" ||
+      colaborador.edad === "" ||
+      colaborador.cargo === "" ||
+      colaborador.telefono === ""
     ) {
+      setMostrarAlerta(true);
+    } else {
       agregarColaborador(colaborador);
       setColaborador({
-        nombre: '',
-        correo: '',
-        edad: '',
-        cargo: '',
-        telefono: '',
+        nombre: "",
+        correo: "",
+        edad: "",
+        cargo: "",
+        telefono: "",
       });
-    } else {
-      // Mostrar mensaje de error
+
+      setMostrarAlerta(false);
     }
   };
 
   return (
-    <div>
+    <div className="form col-12 col-lg-4">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-            <h1>Agregar Colaborador</h1>
+          <h2>Agregar Colaborador</h2>
           <label>Nombre:</label>
           <input
             type="text"
@@ -83,7 +88,7 @@ const Formulario = ({ agregarColaborador }) => {
         <div className="form-group">
           <label>Teléfono:</label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             name="telefono"
             value={colaborador.telefono}
@@ -94,6 +99,11 @@ const Formulario = ({ agregarColaborador }) => {
           Agregar Colaborador
         </button>
       </form>
+      {mostrarAlerta ? (
+        <Alert mensaje="Por favor complete todos los campos" tipo="danger" />
+      ) : (
+        <Alert mensaje={mensajeAlert} tipo={tipoAlert} />
+      )}
     </div>
   );
 };
