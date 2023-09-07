@@ -39,9 +39,9 @@ th, td {
 }
 
 
-.form-group {
+/* .form-group {
   margin-bottom: 10px;
-}
+} */
 
 
 .btn-primary {
@@ -62,8 +62,8 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
   line-height: 1.1;
+  font-size: 2em;
 }
 
 button {
@@ -86,4 +86,7 @@ button:focus-visible {
 }
 
 
+.buscador{
+  display: flex;
+}
 
