@@ -47,6 +47,7 @@ const App = () => {
           mensajeAlert={mensaje}
           tipoAlert={tipoMensaje}
         />
+        <Alert/>
       </div>
     </div>
   );
