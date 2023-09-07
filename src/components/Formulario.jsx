@@ -20,7 +20,12 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validarCorreo(colaborador.correo) || !validarTelefono(colaborador.telefono)) {
+    // Validación personalizada del correo electrónico
+    if (
+      !validarCorreo(colaborador.correo) ||
+      !validarTelefono(colaborador.telefono) ||
+      !validarEdad(colaborador.edad)
+    ) {
       setMostrarAlerta(true);
     } else {
       agregarColaborador(colaborador);
@@ -34,16 +39,20 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
       setMostrarAlerta(false);
     }
   };
-
+// validando la semantica del werito
   const validarCorreo = (correo) => {
-    // encontre esta como la mas usada universalmente profe, si me esta viendo profe, la recibo con cariño xD
     const regexCorreo = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
     return regexCorreo.test(correo);
   };
-
+// validando el cel del werito
   const validarTelefono = (telefono) => {
     const regexTelefono = /^\d{9}$/;
     return regexTelefono.test(telefono);
+  };
+// validando edad del werito
+  const validarEdad = (edad) => {
+    const edadNumero = parseInt(edad, 10);
+    return !isNaN(edadNumero) && edadNumero >= 18 && edadNumero <= 130;
   };
 
   return (
@@ -78,14 +87,21 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
           )}
         </div>
         <div className="form-group">
-          <label>Edad:</label>
+        <label>Edad:</label>
           <input
             type="number"
-            className="form-control"
+            className={`form-control ${
+              mostrarAlerta && !validarEdad(colaborador.edad)
+                ? "is-invalid"
+                : ""
+            }`}
             name="edad"
             value={colaborador.edad}
             onChange={handleChange}
           />
+          {mostrarAlerta && !validarEdad(colaborador.edad) && (
+            <Alert mensaje="Por favor ingrese una edad válida (entre 18 y 130 años)" tipo="danger" />
+          )}
         </div>
         <div className="form-group">
           <label>Cargo:</label>
@@ -118,10 +134,8 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
           Agregar Colaborador
         </button>
       </form>
-      {mostrarAlerta ? (
-        <Alert mensaje="Por favor complete todos los campos" tipo="danger" />
-      ) : (
-        <Alert mensaje={mensajeAlert} tipo={tipoAlert} />
+      {mostrarAlerta && (
+        <Alert mensaje="Por favor complete todos los campos correctamente" tipo="danger" />
       )}
     </div>
   );
