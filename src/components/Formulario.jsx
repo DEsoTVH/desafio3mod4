@@ -20,7 +20,6 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validación personalizada del correo electrónico
     if (!validarCorreo(colaborador.correo) || !validarTelefono(colaborador.telefono)) {
       setMostrarAlerta(true);
     } else {
@@ -37,13 +36,12 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
   };
 
   const validarCorreo = (correo) => {
-    // Expresión regular para validar un correo electrónico
+    // encontre esta como la mas usada universalmente profe, si me esta viendo profe, la recibo con cariño xD
     const regexCorreo = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
     return regexCorreo.test(correo);
   };
 
   const validarTelefono = (telefono) => {
-    // Expresión regular para validar un número de teléfono con exactamente 9 dígitos
     const regexTelefono = /^\d{9}$/;
     return regexTelefono.test(telefono);
   };
