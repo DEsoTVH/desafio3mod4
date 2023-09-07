@@ -19,13 +19,9 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      colaborador.nombre === "" ||
-      colaborador.correo === "" ||
-      colaborador.edad === "" ||
-      colaborador.cargo === "" ||
-      colaborador.telefono === ""
-    ) {
+
+    // Validación personalizada del correo electrónico
+    if (!validarCorreo(colaborador.correo) || !validarTelefono(colaborador.telefono)) {
       setMostrarAlerta(true);
     } else {
       agregarColaborador(colaborador);
@@ -36,14 +32,25 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
         cargo: "",
         telefono: "",
       });
-
       setMostrarAlerta(false);
     }
   };
 
+  const validarCorreo = (correo) => {
+    // Expresión regular para validar un correo electrónico
+    const regexCorreo = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    return regexCorreo.test(correo);
+  };
+
+  const validarTelefono = (telefono) => {
+    // Expresión regular para validar un número de teléfono con exactamente 9 dígitos
+    const regexTelefono = /^\d{9}$/;
+    return regexTelefono.test(telefono);
+  };
+
   return (
     <div className="form col-12 col-lg-4">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <h2>Agregar Colaborador</h2>
           <label>Nombre:</label>
@@ -56,14 +63,21 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
           />
         </div>
         <div className="form-group">
-          <label>Correo:</label>
+        <label>Correo:</label>
           <input
             type="email"
-            className="form-control"
+            className={`form-control ${
+              mostrarAlerta && !validarCorreo(colaborador.correo)
+                ? "is-invalid"
+                : ""
+            }`}
             name="correo"
             value={colaborador.correo}
             onChange={handleChange}
           />
+          {mostrarAlerta && !validarCorreo(colaborador.correo) && (
+            <Alert mensaje="Por favor ingrese un correo válido" tipo="danger" />
+          )}
         </div>
         <div className="form-group">
           <label>Edad:</label>
@@ -86,14 +100,21 @@ const Formulario = ({ agregarColaborador, mensajeAlert, tipoAlert }) => {
           />
         </div>
         <div className="form-group">
-          <label>Teléfono:</label>
+        <label>Teléfono:</label>
           <input
-            type="number"
-            className="form-control"
+            type="tel"
+            className={`form-control ${
+              mostrarAlerta && !validarTelefono(colaborador.telefono)
+                ? "is-invalid"
+                : ""
+            }`}
             name="telefono"
             value={colaborador.telefono}
             onChange={handleChange}
           />
+          {mostrarAlerta && !validarTelefono(colaborador.telefono) && (
+            <Alert mensaje="Por favor ingrese un teléfono válido de 9 dígitos" tipo="danger" />
+          )}
         </div>
         <button type="submit" className="btn btn-primary">
           Agregar Colaborador
